@@ -40,7 +40,7 @@ public class EliteEnemy extends AbstractAircraft {
             // 向下直射单排子弹
             int x = this.getLocationX();
             int y = this.getLocationY();
-            BaseBullet bullet = new EnemyBullet(x, y, 0, 5, bulletPower);
+            BaseBullet bullet = new EnemyBullet(x, y, 0, 10, bulletPower);
             res.add(bullet);
         }
         return res;

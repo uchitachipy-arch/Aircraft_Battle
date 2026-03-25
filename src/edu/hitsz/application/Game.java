@@ -75,17 +75,21 @@ public class Game extends JPanel {
             public void run() {
 
                 enemySpawnCounter++;
-                if (enemySpawnCounter >= enemySpawnCycle) {
+                if (enemySpawnCounter >=enemySpawnCycle) {
                     enemySpawnCounter = 0;
-                    // 随机生我5种不同类型的敵机
+                    // 随机产生普通敌机和精英敌机
                     if (enemyAircrafts.size() < enemyMaxNumber) {
-                        enemyAircrafts.add(new MobEnemy(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),
-                                0,
-                                10,
-                                30
-                        ));
+                        int randomType = (int) (Math.random() * 2);
+                        int x = (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth()));
+                        int y = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05);
+                        
+                        if (randomType == 0) {
+                            // 普通敌机 - 不射击
+                            enemyAircrafts.add(new MobEnemy(x, y, 0, 10, 30));
+                        } else {
+                            // 精英敌机 - 直射子弹
+                            enemyAircrafts.add(new EliteEnemy(x, y, 0, 8, 40));
+                        }
                     }
                 }
 
@@ -120,7 +124,7 @@ public class Game extends JPanel {
             shootCounter = 0;
             //英雄机射击
             heroBullets.addAll(heroAircraft.shoot());
-            // 敵机射击
+            // 敌机射击
             for (AbstractAircraft enemyAircraft : enemyAircrafts) {
                 enemyBullets.addAll(enemyAircraft.shoot());
             }
@@ -150,13 +154,13 @@ public class Game extends JPanel {
      * 3. 英雄获得补给
      */
     private void crashCheckAction() {
-        // 敵机子弹攻击英雄机
+        // 敌机子弹攻击英雄机
         for (BaseBullet bullet : enemyBullets) {
             if (bullet.notValid()) {
                 continue;
             }
             if (heroAircraft.crash(bullet)) {
-                // 英雄机撒击到敵机子弹
+                // 英雄机被敌机子弹击中
                 heroAircraft.decreaseHp(bullet.getPower());
                 bullet.vanish();
             }

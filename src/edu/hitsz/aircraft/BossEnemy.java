@@ -12,6 +12,7 @@ import java.util.List;
  * 生命值高，按周期向下密集射击
  * @author hitsz
  */
+// todo
 public class BossEnemy extends AbstractAircraft {
 
     private int shootCycle = 12;
@@ -23,29 +24,9 @@ public class BossEnemy extends AbstractAircraft {
     }
 
     @Override
-    public void forward() {
-        super.forward();
-        // 判定 y 轴向下飞行出界
-        if (locationY >= Main.WINDOW_HEIGHT) {
-            vanish();
-        }
-        shootCounter++;
-    }
-
-    @Override
     public List<BaseBullet> shoot() {
-        List<BaseBullet> res = new LinkedList<>();
-        if (shootCounter >= shootCycle) {
-            shootCounter = 0;
-            // 向下密集射击（7发）
-            int x = this.getLocationX();
-            int y = this.getLocationY();
-            
-            for (int i = -3; i <= 3; i++) {
-                res.add(new EnemyBullet(x + i * 8, y, i / 2.0, 5, bulletPower));
-            }
-        }
-        return res;
+        return new LinkedList<>();
     }
 
+    
 }
