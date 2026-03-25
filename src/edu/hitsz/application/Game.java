@@ -75,9 +75,9 @@ public class Game extends JPanel {
             public void run() {
 
                 enemySpawnCounter++;
-                if (enemySpawnCounter >=enemySpawnCycle) {
+                if (enemySpawnCounter >= enemySpawnCycle) {
                     enemySpawnCounter = 0;
-                    // 产生普通敌机
+                    // 随机生我5种不同类型的敵机
                     if (enemyAircrafts.size() < enemyMaxNumber) {
                         enemyAircrafts.add(new MobEnemy(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
@@ -120,7 +120,10 @@ public class Game extends JPanel {
             shootCounter = 0;
             //英雄机射击
             heroBullets.addAll(heroAircraft.shoot());
-            // TODO 敌机射击
+            // 敵机射击
+            for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+                enemyBullets.addAll(enemyAircraft.shoot());
+            }
         }
     }
 
@@ -147,7 +150,17 @@ public class Game extends JPanel {
      * 3. 英雄获得补给
      */
     private void crashCheckAction() {
-        // TODO 敌机子弹攻击英雄机
+        // 敵机子弹攻击英雄机
+        for (BaseBullet bullet : enemyBullets) {
+            if (bullet.notValid()) {
+                continue;
+            }
+            if (heroAircraft.crash(bullet)) {
+                // 英雄机撒击到敵机子弹
+                heroAircraft.decreaseHp(bullet.getPower());
+                bullet.vanish();
+            }
+        }
 
         // 英雄子弹攻击敌机
         for (BaseBullet bullet : heroBullets) {

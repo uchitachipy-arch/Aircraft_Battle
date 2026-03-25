@@ -54,6 +54,46 @@ class MobEnemy {
 }
 AbstractAircraft <|-- MobEnemy
 
+class EliteEnemy {
+    - shootCycle:int
+    - shootCounter:int
+    - bulletPower:int
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- EliteEnemy
+
+class EliteExcellentEnemy {
+    - shootCycle:int
+    - shootCounter:int
+    - bulletPower:int
+    + EliteExcellentEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- EliteExcellentEnemy
+
+class AceEnemy {
+    - shootCycle:int
+    - shootCounter:int
+    - bulletPower:int
+    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- AceEnemy
+
+class BossEnemy {
+    - shootCycle:int
+    - shootCounter:int
+    - bulletPower:int
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- BossEnemy
+
 abstract class BaseBullet
 {
     - power:int
@@ -77,5 +117,35 @@ BaseBullet <|-- EnemyBullet
 
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
+
+note bottom of MobEnemy
+  普通敌机
+  不射击
+end note
+
+note bottom of EliteEnemy
+  精英敌机
+  直射单排子弹
+  周期: 25
+end note
+
+note bottom of EliteExcellentEnemy
+  精锐敌机
+  扇形射击（3发）
+  周期: 20
+end note
+
+note bottom of AceEnemy
+  王牌敌机
+  多排射击（5发）
+  周期: 15
+end note
+
+note bottom of BossEnemy
+  Boss敌机
+  密集射击（7发）
+  高生命值
+  周期: 12
+end note
 
 @enduml
