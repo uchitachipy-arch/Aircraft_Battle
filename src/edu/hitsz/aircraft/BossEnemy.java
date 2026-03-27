@@ -27,6 +27,8 @@ public class BossEnemy extends AbstractAircraft {
     public List<BaseBullet> shoot() {
         return new LinkedList<>();
     }
-
-    
+    @Override
+    public List<edu.hitsz.prop.baseprop> dropProp() {
+        return new LinkedList<>();
+    }
 }

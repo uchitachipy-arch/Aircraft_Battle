@@ -4,6 +4,7 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import java.util.List;
 
+import edu.hitsz.prop.baseprop;
 /**
  * 所有种类飞机的抽象父类
  * @author hitsz
@@ -40,6 +41,12 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      *  非可射击对象空实现，返回空列表
      */
     public abstract List<BaseBullet> shoot();
+
+    /**
+     * 敌机坠毁后道具掉落方法
+     * @return 道具列表，默认无道具返回空列表
+     */
+    public abstract List<baseprop> dropProp();
 
 }
 

@@ -58,4 +58,10 @@ public class HeroAircraft extends AbstractAircraft {
         return res;
     }
 
+    @Override
+    public List<edu.hitsz.prop.baseprop> dropProp() {
+        // 英雄机不会掉落道具
+        return new LinkedList<>();
+    }
+
 }

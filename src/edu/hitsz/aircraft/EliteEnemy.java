@@ -3,6 +3,8 @@ package edu.hitsz.aircraft;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
+import edu.hitsz.prop.PropFactory;
+import edu.hitsz.prop.baseprop;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class EliteEnemy extends AbstractAircraft {
 
-    private int shootCycle = 25;
+    private int shootCycle = 20;
     private int shootCounter = 0;
     private int bulletPower = 20;
 
@@ -42,6 +44,20 @@ public class EliteEnemy extends AbstractAircraft {
             int y = this.getLocationY();
             BaseBullet bullet = new EnemyBullet(x, y, 0, 10, bulletPower);
             res.add(bullet);
+        }
+        return res;
+    }
+
+    @Override
+    public List<baseprop> dropProp() {
+        // 掉落概率 100%
+        double dropRate = 1;
+        List<baseprop> res = new LinkedList<>();
+        if (Math.random() <= dropRate) {
+            int x = this.getLocationX();
+            int y = this.getLocationY();
+            baseprop prop= PropFactory.createRandomProp(x, y, 0,8);
+            res.add(prop);
         }
         return res;
     }

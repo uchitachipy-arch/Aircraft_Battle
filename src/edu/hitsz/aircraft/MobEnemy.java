@@ -31,4 +31,9 @@ public class MobEnemy extends AbstractAircraft {
         return new LinkedList<>();
     }
 
+    @Override
+    public List<edu.hitsz.prop.baseprop> dropProp() {
+        return new LinkedList<>();
+    }
+
 }
