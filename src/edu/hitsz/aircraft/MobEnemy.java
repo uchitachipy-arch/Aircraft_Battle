@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 普通敌机
  * 不可射击、不掉落道具
- * @author hitsz
+ * @author uchpy
  */
 public class MobEnemy extends AbstractAircraft {
 

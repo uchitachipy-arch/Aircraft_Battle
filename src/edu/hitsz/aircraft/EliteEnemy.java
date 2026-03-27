@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 精英敌机
  * 按周期向下直射单排子弹
- * @author hitsz
+ * @author uchpy
  */
 public class EliteEnemy extends AbstractAircraft {
 

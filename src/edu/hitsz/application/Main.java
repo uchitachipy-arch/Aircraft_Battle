@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * 程序入口
- * @author hitsz
+ * @author uchpy
  */
 public class Main {
 

@@ -5,7 +5,7 @@ import edu.hitsz.basic.AbstractFlyingObject;
 
 /**
  * 子弹基类
- * @author hitsz
+ * @author uchpy
  */
 public abstract class BaseBullet extends AbstractFlyingObject {
 

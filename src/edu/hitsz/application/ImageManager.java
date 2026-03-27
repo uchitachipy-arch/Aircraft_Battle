@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 综合管理图片的加载，访问
  * 提供图片的静态访问方法
- * @author hitsz
+ * @author uchpy
  */
 public class ImageManager {
 
