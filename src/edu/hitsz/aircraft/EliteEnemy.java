@@ -56,7 +56,12 @@ public class EliteEnemy extends AbstractAircraft {
         if (Math.random() <= dropRate) {
             int x = this.getLocationX();
             int y = this.getLocationY();
-            baseprop prop= PropFactory.createRandomProp(x, y, 0,8);
+            String type;
+            double p= Math.random() ;
+            if(p <= 0.33) type = "BloodProp";
+            else if( p <= 0.66) type = "FireSuperProp";
+            else type = "FireProp" ;
+            baseprop prop= PropFactory.createProp(x, y, 0,8,type);
             res.add(prop);
         }
         return res;

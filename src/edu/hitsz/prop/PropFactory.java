@@ -5,15 +5,15 @@ package edu.hitsz.prop;
  */
 public class PropFactory {
 
-    public static baseprop createRandomProp(int locationX, int locationY, int speedX, int speedY) {
-        double r = Math.random();
-        if (r < 0.2) {
+    public static baseprop createProp(int locationX, int locationY, int speedX, int speedY, String type) {
+        
+        if (type == "FireProp") {
             return new FireProp(locationX, locationY, speedX, speedY);
-        } else if (r < 0.4) {
+        } else if (type == "FireSuperProp") {
             return new FireSuperProp(locationX, locationY, speedX, speedY);
-        } else if (r < 0.6) {
+        } else if (type == "BombProp") {
             return new BombProp(locationX, locationY, speedX, speedY);
-        } else if (r < 0.8) {
+        } else if (type == "BloodProp") {
             return new BloodProp(locationX, locationY, speedX, speedY);
         } else {
             return new FreezeProp(locationX, locationY, speedX, speedY);
