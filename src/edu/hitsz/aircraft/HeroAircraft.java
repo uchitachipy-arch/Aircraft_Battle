@@ -16,6 +16,8 @@ public class HeroAircraft extends AbstractAircraft {
 
     //每次射击发射子弹数量
     private int shootNum = 1;
+    
+    private int Hpmax = 100;
 
     //子弹威力
     private int power = 30;
@@ -26,9 +28,13 @@ public class HeroAircraft extends AbstractAircraft {
     private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
     }
-    public static synchronized HeroAircraft getInstance(int locationX, int locationY, int speedX, int speedY, int hp) {
+    public static HeroAircraft getInstance(int locationX, int locationY, int speedX, int speedY, int hp) {
         if (instance == null) {
-            instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
+            synchronized (HeroAircraft.class){
+                if(instance == null) {
+                    instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
+                }          
+            }  
         }
         return instance;
     }
@@ -63,5 +69,10 @@ public class HeroAircraft extends AbstractAircraft {
         // 英雄机不会掉落道具
         return new LinkedList<>();
     }
-
+    public void addHp(int add){
+        hp += add;
+        if(hp > Hpmax ){
+            hp= Hpmax;
+        }
+    }
 }

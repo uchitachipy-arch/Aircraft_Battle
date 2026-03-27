@@ -8,6 +8,6 @@ public class FireSuperProp extends baseprop {
 
     @Override
     public void effect() {
-       
+        System.out.println("FirePlusSupply active!");
     }
 }

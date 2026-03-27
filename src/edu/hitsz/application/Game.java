@@ -104,10 +104,8 @@ public class Game extends JPanel {
                 aircraftsMoveAction();
                 // 道具移动
                 propsMoveAction();
-                // 撞击检测
+                // 撞击检测:子弹，道具
                 crashCheckAction();
-                // 道具碰撞检测
-                propCrashCheckAction();
                 // 后处理
                 postProcessAction();
                 // 重绘界面
@@ -159,19 +157,7 @@ public class Game extends JPanel {
         }
     }
 
-    private void propCrashCheckAction() {
-        for (baseprop prop : props) {
-            if (prop.notValid()) {
-                continue;
-            }
-            if (heroAircraft.crash(prop) || prop.crash(heroAircraft)) {
-                // 触碰后触发道具效果（当前仅消失）
-                prop.effect();
-                prop.vanish();
-            }
-        }
-    }
-
+    
 
     /**
      * 碰撞检测：
@@ -223,8 +209,17 @@ public class Game extends JPanel {
             }
         }
 
-        // Todo: 我方获得道具，道具生效
-
+        // 我方获得道具，道具生效
+        for (baseprop prop : props) {
+            if (prop.notValid()) {
+                continue;
+            }
+            if (heroAircraft.crash(prop) || prop.crash(heroAircraft)) {
+                // 触碰后触发道具效果（当前仅消失）
+                prop.effect();
+                prop.vanish();
+            }
+        }
     }
 
     /**
