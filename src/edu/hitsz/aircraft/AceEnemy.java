@@ -17,7 +17,7 @@ import java.util.List;
 // to do 
 public class AceEnemy extends AbstractAircraft {
 
-    private int shootCycle = 15;
+    private int shootCycle = 25;
     private int shootCounter = 0;
     private int bulletPower = 30;
 

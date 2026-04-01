@@ -93,8 +93,12 @@ public class Game extends JPanel {
                             // 精英敌机 - 直射子弹
                             enemyAircrafts.add(new EliteEnemy(x, y, 0, 8, 40));
                         } else if (randomType == 2){
-                            enemyAircrafts.add(new ElitePlusEnemy(x, y, 0, 8, 40));
-                        }else enemyAircrafts.add(new AceEnemy(x, y, 0, 8, 40)) ;
+                            int horizontalSpeed = Math.random() < 0.5 ? -2 : 2;
+                            enemyAircrafts.add(new ElitePlusEnemy(x, y, horizontalSpeed, 8, 40));
+                        } else {
+                            int horizontalSpeed = Math.random() < 0.5 ? -2 : 2;
+                            enemyAircrafts.add(new AceEnemy(x, y, horizontalSpeed, 8, 40));
+                        }
                     }
                 }
 
