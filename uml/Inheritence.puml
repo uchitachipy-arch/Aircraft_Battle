@@ -33,17 +33,24 @@ abstract class AbstractAircraft
     + decreaseHp(int decrease):void
     + getHp():int
     + {abstract} shoot():List<BaseBullet>
+    + {abstract} dropProp():List<baseprop>
  }
 
 
-class HeroAircraft {
+class HeroAircraft <<Singleton>> {
+    - {static} instance:HeroAircraft
     - shootNum:int
+    - Hpmax:int
     - power:int
     - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + {static} getInstance(int locationX, int locationY, int speedX, int speedY, int hp):HeroAircraft
     + forward():void
     + shoot():List<BaseBullet>
+    + dropProp():List<baseprop>
+    + addHp(int add):void
 }
+HeroAircraft *--> HeroAircraft
 
 AbstractAircraft <|-- HeroAircraft
 
@@ -51,6 +58,7 @@ class MobEnemy {
     + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+  + dropProp():List<baseprop>
 }
 AbstractAircraft <|-- MobEnemy
 
@@ -61,18 +69,20 @@ class EliteEnemy {
     + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+    + dropProp():List<baseprop>
 }
 AbstractAircraft <|-- EliteEnemy
 
-class EliteExcellentEnemy {
+  class ElitePlusEnemy {
     - shootCycle:int
     - shootCounter:int
     - bulletPower:int
-    + EliteExcellentEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+    + dropProp():List<baseprop>
 }
-AbstractAircraft <|-- EliteExcellentEnemy
+  AbstractAircraft <|-- ElitePlusEnemy
 
 class AceEnemy {
     - shootCycle:int
@@ -81,22 +91,13 @@ class AceEnemy {
     + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+    + dropProp():List<baseprop>
 }
 AbstractAircraft <|-- AceEnemy
 
-class BossEnemy {
-    - shootCycle:int
-    - shootCounter:int
-    - bulletPower:int
-    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-}
-AbstractAircraft <|-- BossEnemy
-
 abstract class BaseBullet
 {
-    - power:int
+    # power:int
     + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
     + forward():void
 	+ getPower():int
@@ -115,8 +116,79 @@ class EnemyBullet {
 BaseBullet <|-- HeroBullet
 BaseBullet <|-- EnemyBullet
 
+abstract class baseprop {
+    + baseprop(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + {abstract} effect():void
+}
+
+class BloodProp {
+    - add:int
+    + BloodProp(int locationX, int locationY, int speedX, int speedY)
+    + effect():void
+}
+
+class BombProp {
+    + BombProp(int locationX, int locationY, int speedX, int speedY)
+    + effect():void
+}
+
+class FireProp {
+  + FireProp(int locationX, int locationY, int speedX, int speedY)
+  + effect():void
+}
+
+class FireSuperProp {
+  + FireSuperProp(int locationX, int locationY, int speedX, int speedY)
+  + effect():void
+}
+
+class FreezeProp {
+  + FreezeProp(int locationX, int locationY, int speedX, int speedY)
+  + effect():void
+}
+
+baseprop <|-- BloodProp
+baseprop <|-- BombProp
+baseprop <|-- FireProp
+baseprop <|-- FireSuperProp
+baseprop <|-- FreezeProp
+
+interface EnemyFactory {
+  + createEnemy(int locationX, int locationY):AbstractAircraft
+}
+
+class MobEnemyFactory {
+  + createEnemy(int locationX, int locationY):AbstractAircraft
+}
+
+class EliteEnemyFactory {
+  + createEnemy(int locationX, int locationY):AbstractAircraft
+}
+
+class ElitePlusEnemyFactory {
+  + createEnemy(int locationX, int locationY):AbstractAircraft
+}
+
+class AceEnemyFactory {
+  + createEnemy(int locationX, int locationY):AbstractAircraft
+}
+
+EnemyFactory <|.. MobEnemyFactory
+EnemyFactory <|.. EliteEnemyFactory
+EnemyFactory <|.. ElitePlusEnemyFactory
+EnemyFactory <|.. AceEnemyFactory
+
+class PropFactory {
+  + {static} createProp(int locationX, int locationY, int speedX, int speedY, String type):baseprop
+}
+
+PropFactory ..> baseprop : create
+Game ..> EnemyFactory : use
+
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
+AbstractFlyingObject <|-- baseprop
 
 note bottom of MobEnemy
   普通敌机
@@ -126,26 +198,28 @@ end note
 note bottom of EliteEnemy
   精英敌机
   直射单排子弹
-  周期: 25
+  周期: 20
 end note
 
-note bottom of EliteExcellentEnemy
+note bottom of ElitePlusEnemy
   精锐敌机
-  扇形射击（3发）
+  直射双排子弹
   周期: 20
 end note
 
 note bottom of AceEnemy
   王牌敌机
-  多排射击（5发）
-  周期: 15
+  扇形射击（3发）
+  周期: 25
 end note
 
-note bottom of BossEnemy
-  Boss敌机
-  密集射击（7发）
-  高生命值
-  周期: 12
+note right of HeroAircraft
+  单例模式
+  1) 私有构造方法
+  2) 静态唯一实例 instance
+  3) 静态访问点 getInstance(...)
 end note
+
+Game ..> HeroAircraft : getInstance()
 
 @enduml
