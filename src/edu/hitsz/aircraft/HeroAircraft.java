@@ -17,7 +17,7 @@ public class HeroAircraft extends AbstractAircraft {
     //每次射击发射子弹数量
     private int shootNum = 1;
     
-    private int Hpmax = 100;
+    private int Hpmax = 1000;
 
     //子弹威力
     private int power = 30;

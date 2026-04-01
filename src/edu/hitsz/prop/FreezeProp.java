@@ -8,6 +8,6 @@ public class FreezeProp extends baseprop {
 
     @Override
     public void effect() {
-        
+        System.out.println("Anemys are frozen!");
     }
 }

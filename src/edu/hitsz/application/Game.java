@@ -53,7 +53,7 @@ public class Game extends JPanel {
         heroAircraft = HeroAircraft.getInstance(
                 Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 100);
+                0, 0, 1000);
 
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
@@ -82,17 +82,19 @@ public class Game extends JPanel {
                     enemySpawnCounter = 0;
                     // 随机产生普通敌机和精英敌机
                     if (enemyAircrafts.size() < enemyMaxNumber) {
-                        int randomType = (int) (Math.random() * 2);
+                        int randomType = (int) (Math.random() * 4);
                         int x = (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth()));
                         int y = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05);
                         
                         if (randomType == 0) {
                             // 普通敌机 - 不射击
                             enemyAircrafts.add(new MobEnemy(x, y, 0, 10, 30));
-                        } else {
+                        } else if (randomType == 1){
                             // 精英敌机 - 直射子弹
                             enemyAircrafts.add(new EliteEnemy(x, y, 0, 8, 40));
-                        }
+                        } else if (randomType == 2){
+                            enemyAircrafts.add(new ElitePlusEnemy(x, y, 0, 8, 40));
+                        }else enemyAircrafts.add(new AceEnemy(x, y, 0, 8, 40)) ;
                     }
                 }
 

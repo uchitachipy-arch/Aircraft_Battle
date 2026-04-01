@@ -8,6 +8,6 @@ public class BombProp extends baseprop {
 
     @Override
     public void effect() {
-        
+        System.out.println("Get a bomb !");
     }
 }

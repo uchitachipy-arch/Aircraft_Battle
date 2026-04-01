@@ -10,18 +10,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 王牌敌机
- * 按周期向下多排射击
+ * 精锐敌机
  * @author hitsz
  */
-// to do 
-public class AceEnemy extends AbstractAircraft {
+//todo
+public class ElitePlusEnemy extends AbstractAircraft {
 
-    private int shootCycle = 15;
+    private int shootCycle = 20;
     private int shootCounter = 0;
-    private int bulletPower = 30;
+    private int bulletPower = 25;
 
-    public AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
+    public ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
     }
     @Override
@@ -33,21 +32,19 @@ public class AceEnemy extends AbstractAircraft {
         }
         shootCounter++;
     }
+   
     @Override
-
     public List<BaseBullet> shoot() {
         List<BaseBullet> res = new LinkedList<>();
         if (shootCounter >= shootCycle) {
             shootCounter = 0;
-            // 扇形散射：左斜、中直、右斜三发
+            // 向下直射双排子弹
             int x = this.getLocationX();
             int y = this.getLocationY();
-            int offset = 12;
-            BaseBullet leftBullet = new EnemyBullet(x - offset, y, -2, 10, bulletPower);
-            BaseBullet midBullet = new EnemyBullet(x, y, 0, 10, bulletPower);
-            BaseBullet rightBullet = new EnemyBullet(x + offset, y, 2, 10, bulletPower);
+            int offset = 15;
+            BaseBullet leftBullet = new EnemyBullet(x - offset, y, 0, 10, bulletPower);
+            BaseBullet rightBullet = new EnemyBullet(x + offset, y, 0, 10, bulletPower);
             res.add(leftBullet);
-            res.add(midBullet);
             res.add(rightBullet);
         }
         return res;
@@ -63,14 +60,14 @@ public class AceEnemy extends AbstractAircraft {
             int y = this.getLocationY();
             String type;
             double p= Math.random() ;
-            if(p <= 0.2) type = "BloodProp";
-            else if( p <= 0.4) type = "FireSuperProp";
-            else if( p <= 0.6 ) type = "FireProp" ;
-            else if( p <= 0.8 ) type = "BombProp" ;
-            else type = "FreezeProp" ; 
+            if(p <= 0.25) type = "BloodProp";
+            else if( p <= 0.5) type = "FireSuperProp";
+            else if( p <= 0.75 )type = "FireProp" ;
+            else type = "BombProp" ;
             baseprop prop= PropFactory.createProp(x, y, 0,8,type);
             res.add(prop);
         }
         return res;
     }
+
 }
