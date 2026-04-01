@@ -1,6 +1,7 @@
 package edu.hitsz.application;
 
 import edu.hitsz.aircraft.*;
+import edu.hitsz.aircraft.factory.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.prop.baseprop;
@@ -31,6 +32,7 @@ public class Game extends JPanel {
     private final List<BaseBullet> heroBullets;
     private final List<BaseBullet> enemyBullets;
     private final List<baseprop> props;
+    private final List<EnemyFactory> enemyFactories;
 
     //屏幕中出现的敌机最大数量
     private final int enemyMaxNumber = 5;
@@ -59,6 +61,12 @@ public class Game extends JPanel {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
+        enemyFactories = Arrays.asList(
+            new MobEnemyFactory(),
+            new EliteEnemyFactory(),
+            new ElitePlusEnemyFactory(),
+            new AceEnemyFactory()
+        );
 
         //启动英雄机鼠标监听
         new HeroController(this, heroAircraft);
@@ -80,25 +88,13 @@ public class Game extends JPanel {
                 enemySpawnCounter++;
                 if (enemySpawnCounter >=enemySpawnCycle) {
                     enemySpawnCounter = 0;
-                    // 随机产生普通敌机和精英敌机
+                    // 随机产生敌机
                     if (enemyAircrafts.size() < enemyMaxNumber) {
-                        int randomType = (int) (Math.random() * 4);
+                        int randomType = (int) (Math.random() * enemyFactories.size());
                         int x = (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth()));
                         int y = (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05);
-                        
-                        if (randomType == 0) {
-                            // 普通敌机 - 不射击
-                            enemyAircrafts.add(new MobEnemy(x, y, 0, 10, 30));
-                        } else if (randomType == 1){
-                            // 精英敌机 - 直射子弹
-                            enemyAircrafts.add(new EliteEnemy(x, y, 0, 8, 40));
-                        } else if (randomType == 2){
-                            int horizontalSpeed = Math.random() < 0.5 ? -2 : 2;
-                            enemyAircrafts.add(new ElitePlusEnemy(x, y, horizontalSpeed, 8, 40));
-                        } else {
-                            int horizontalSpeed = Math.random() < 0.5 ? -2 : 2;
-                            enemyAircrafts.add(new AceEnemy(x, y, horizontalSpeed, 8, 40));
-                        }
+
+                        enemyAircrafts.add(enemyFactories.get(randomType).createEnemy(x, y));
                     }
                 }
 
