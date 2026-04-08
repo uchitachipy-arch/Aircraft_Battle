@@ -4,7 +4,6 @@ import edu.hitsz.bullet.*;
 import java.util.LinkedList;
 import java.util.List;
 public class oneline_enemy implements Shootstrategy{
-    private int shootNum = 1;
     
     //子弹威力
     private int power = 30;

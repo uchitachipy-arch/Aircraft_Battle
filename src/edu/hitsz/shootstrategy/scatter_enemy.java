@@ -4,7 +4,6 @@ import edu.hitsz.bullet.*;
 import java.util.LinkedList;
 import java.util.List;
 public class scatter_enemy implements Shootstrategy{
-    private int shootNum = 2;
     
     //子弹威力
     private int shootCycle = 25;

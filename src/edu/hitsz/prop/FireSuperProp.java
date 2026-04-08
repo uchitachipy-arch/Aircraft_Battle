@@ -1,5 +1,6 @@
 package edu.hitsz.prop;
-
+import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.shootstrategy.*;
 public class FireSuperProp extends baseprop {
 
     public FireSuperProp(int locationX, int locationY, int speedX, int speedY) {
@@ -8,6 +9,7 @@ public class FireSuperProp extends baseprop {
 
     @Override
     public void effect() {
-        System.out.println("FirePlusSupply active!");
+        HeroAircraft heroAircraft = HeroAircraft.getInstance(0, 0, 0, 0, 0);
+        heroAircraft.setShootStrategy(new ring20_bullet());
     }
 }
