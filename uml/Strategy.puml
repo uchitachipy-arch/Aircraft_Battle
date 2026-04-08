@@ -1,0 +1,125 @@
+@startuml Strategy_Pattern
+
+title 策略模式 构造类图
+
+!theme plain
+
+interface Shootstrategy {
+    + {abstract} createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class onelinebullet_hero {
+    - shootNum: int
+    - power: int
+    - shootCycle: double
+    - shootCounter: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class oneline_enemy {
+    - shootCycle: int
+    - shootCounter: int
+    - bulletPower: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class ring20_bullet {
+    - bulletCount: int
+    - power: int
+    - speed: int
+    - bulletCycle: int
+    - bulletCounter: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class scatter3_bullet {
+    - bulletCount: int
+    - power: int
+    - shootCycle: int
+    - shootCounter: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class scatter_enemy {
+    - shootCycle: int
+    - shootCounter: int
+    - bulletPower: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class twolinebullet {
+    - bulletLineCount: int
+    - power: int
+    - shootCycle: int
+    - shootCounter: int
+    ---
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+class nobullet {
+    + createbullet(int, int, int, int, int): List<BaseBullet>
+}
+
+abstract class AbstractAircraft {
+    # shootStrategy: Shootstrategy
+    ---
+    + setShootStrategy(Shootstrategy): void
+    + {abstract} shoot(): List<BaseBullet>
+}
+
+Shootstrategy <|.. onelinebullet_hero
+Shootstrategy <|.. oneline_enemy
+Shootstrategy <|.. ring20_bullet
+Shootstrategy <|.. scatter3_bullet
+Shootstrategy <|.. scatter_enemy
+Shootstrategy <|.. twolinebullet
+Shootstrategy <|.. nobullet
+
+AbstractAircraft --> Shootstrategy : use
+
+class HeroAircraft{
+
+}
+
+AbstractAircraft <|-- HeroAircraft
+
+note bottom of onelinebullet_hero
+    英雄机策略
+    单排直射
+end note
+
+note bottom of oneline_enemy
+    敌机策略
+    单排直射
+end note
+
+note bottom of ring20_bullet
+    Boss敌机与英雄机策略
+    20发环射
+end note
+
+note bottom of scatter3_bullet
+    英雄机策略
+    3发散射
+end note
+
+note bottom of scatter_enemy
+    敌机策略
+    3发散射
+end note
+
+note bottom of twolinebullet
+    敌机策略
+    双排直射
+end note
+
+note bottom of nobullet
+    敌机策略
+    不发射子弹
+end note
+@enduml

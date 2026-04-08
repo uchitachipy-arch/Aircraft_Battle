@@ -1,0 +1,137 @@
+@startuml Factory_Pattern
+
+title 工厂模式：简单工厂 + 工厂方法
+
+!theme plain
+
+'==================== 简单工厂模式部分 ====================
+
+abstract class baseprop {
+    # locationX: int
+    # locationY: int
+    # speedX: int
+    # speedY: int
+    ---
+    + baseprop(int, int, int, int)
+    + forward(): void
+    + {abstract} effect(): void
+}
+
+class BloodProp {
+    + BloodProp(int, int, int, int)
+    + effect(): void
+}
+
+class FireProp {
+    + FireProp(int, int, int, int)
+    + effect(): void
+}
+
+class FireSuperProp {
+    + FireSuperProp(int, int, int, int)
+    + effect(): void
+}
+
+class BombProp {
+    + BombProp(int, int, int, int)
+    + effect(): void
+}
+
+class FreezeProp {
+    + FreezeProp(int, int, int, int)
+    + effect(): void
+}
+
+class PropFactory {
+    + {static} createProp(int, int, int, int, String): baseprop
+}
+
+baseprop <|-- BloodProp
+baseprop <|-- FireProp
+baseprop <|-- FireSuperProp
+baseprop <|-- BombProp
+baseprop <|-- FreezeProp
+
+PropFactory ..> baseprop : create
+PropFactory ..> BloodProp : instantiate
+PropFactory ..> FireProp : instantiate
+PropFactory ..> FireSuperProp : instantiate
+PropFactory ..> BombProp : instantiate
+PropFactory ..> FreezeProp : instantiate
+
+
+'==================== 工厂方法模式部分 ====================
+
+abstract class AbstractAircraft {
+    # maxHp: int
+    # hp: int
+    ---
+    + AbstractAircraft(int, int, int, int, int)
+    + decreaseHp(int): void
+    + getHp(): int
+}
+
+class MobEnemy {
+    + MobEnemy(int, int, int, int, int)
+}
+
+class EliteEnemy {
+    + EliteEnemy(int, int, int, int, int)
+}
+
+class ElitePlusEnemy {
+    + ElitePlusEnemy(int, int, int, int, int)
+}
+
+class AceEnemy {
+    + AceEnemy(int, int, int, int, int)
+}
+
+class BossEnemy {
+    + BossEnemy(int, int, int, int, int)
+}
+
+interface EnemyFactory {
+    + {abstract} createEnemy(int, int): AbstractAircraft
+}
+
+class MobEnemyFactory {
+    + createEnemy(int, int): AbstractAircraft
+}
+
+class EliteEnemyFactory {
+    + createEnemy(int, int): AbstractAircraft
+}
+
+class ElitePlusEnemyFactory {
+    + createEnemy(int, int): AbstractAircraft
+}
+
+class AceEnemyFactory {
+    + createEnemy(int, int): AbstractAircraft
+}
+
+class BossEnemyFactory {
+    + createEnemy(int, int): AbstractAircraft
+}
+
+AbstractAircraft <|-- MobEnemy
+AbstractAircraft <|-- EliteEnemy
+AbstractAircraft <|-- ElitePlusEnemy
+AbstractAircraft <|-- AceEnemy
+AbstractAircraft <|-- BossEnemy
+
+EnemyFactory <|.. MobEnemyFactory
+EnemyFactory <|.. EliteEnemyFactory
+EnemyFactory <|.. ElitePlusEnemyFactory
+EnemyFactory <|.. AceEnemyFactory
+EnemyFactory <|.. BossEnemyFactory
+
+MobEnemyFactory ..> MobEnemy : create
+EliteEnemyFactory ..> EliteEnemy : create
+ElitePlusEnemyFactory ..> ElitePlusEnemy : create
+AceEnemyFactory ..> AceEnemy : create
+BossEnemyFactory ..> BossEnemy : create
+
+
+@enduml

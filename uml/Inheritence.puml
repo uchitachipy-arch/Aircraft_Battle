@@ -1,152 +1,170 @@
-@startuml
-'https://plantuml.com/class-diagram
+@startuml Inheritance_and_Singleton
 
-abstract class AbstractFlyingObject
-{
-    # locationX:int
-    # locationY:int
-    # speedX:int
-    # speedY:int
-    # image:BufferedImage
-    # width:int
-    # height:int
-    # isValid:boolean
+title 继承关系与单例模式
 
-    + AbstractFlyingObject(int locationX, int locationY, int speedX, int speedY)
-    + forward():void
-    + crash(AbstractFlyingObject flyingObject):boolean
-    + setLocation(double locationX, double locationY):void
-    + getLocationX():int
-    + getLocationY():int
-    + getSpeedY():int
-    + getImage():BufferedImage
-    + getWidth():int
-    + getHeight():int
-    + notValid():boolean
-    + vanish():void
+!theme plain
+
+abstract class AbstractFlyingObject {
+    # locationX: int
+    # locationY: int
+    # speedX: int
+    # speedY: int
+    # image: BufferedImage
+    # width: int
+    # height: int
+    # isValid: boolean
+    ---
+    + AbstractFlyingObject(int, int, int, int)
+    + forward(): void
+    + crash(AbstractFlyingObject): boolean
+    + setLocation(double, double): void
+    + getLocationX(): int
+    + getLocationY(): int
+    + getSpeedY(): int
+    + getImage(): BufferedImage
+    + getWidth(): int
+    + getHeight(): int
+    + notValid(): boolean
+    + vanish(): void
 }
-abstract class AbstractAircraft
-{
-	# maxHp:int
-    # hp:int
-    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + decreaseHp(int decrease):void
-    + getHp():int
-    + {abstract} shoot():List<BaseBullet>
-    + {abstract} dropProp():List<baseprop>
- }
 
+abstract class AbstractAircraft {
+    # maxHp: int
+    # hp: int
+    # shootStrategy: Shootstrategy
+    ---
+    + AbstractAircraft(int, int, int, int, int)
+    + decreaseHp(int): void
+    + getHp(): int
+    + setShootStrategy(Shootstrategy): void
+    + {abstract} shoot(): List<BaseBullet>
+    + {abstract} dropProp(): List<baseprop>
+}
 
 class HeroAircraft <<Singleton>> {
-    - {static} instance:HeroAircraft
-    - shootNum:int
-    - Hpmax:int
-    - power:int
-    - direction:int
-    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + {static} getInstance(int locationX, int locationY, int speedX, int speedY, int hp):HeroAircraft
-    + forward():void
-    + shoot():List<BaseBullet>
-    + dropProp():List<baseprop>
-    + addHp(int add):void
+    - {static} instance: HeroAircraft
+    - Hpmax: int
+    ---
+    - HeroAircraft(int, int, int, int, int)
+    + {static} getInstance(int, int, int, int, int): HeroAircraft
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
+    + addHp(int): void
 }
-HeroAircraft *--> HeroAircraft
-
-AbstractAircraft <|-- HeroAircraft
 
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-  + dropProp():List<baseprop>
+    + MobEnemy(int, int, int, int, int)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
 }
-AbstractAircraft <|-- MobEnemy
 
 class EliteEnemy {
-    - shootCycle:int
-    - shootCounter:int
-    - bulletPower:int
-    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + dropProp():List<baseprop>
+    - shootCycle: int
+    - shootCounter: int
+    - bulletPower: int
+    ---
+    + EliteEnemy(int, int, int, int, int)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
 }
-AbstractAircraft <|-- EliteEnemy
 
-  class ElitePlusEnemy {
-    - shootCycle:int
-    - shootCounter:int
-    - bulletPower:int
-    + ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + dropProp():List<baseprop>
+class ElitePlusEnemy {
+    - shootCycle: int
+    - shootCounter: int
+    - bulletPower: int
+    ---
+    + ElitePlusEnemy(int, int, int, int, int)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
 }
-  AbstractAircraft <|-- ElitePlusEnemy
 
 class AceEnemy {
-    - shootCycle:int
-    - shootCounter:int
-    - bulletPower:int
-    + AceEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + dropProp():List<baseprop>
+    - shootCycle: int
+    - shootCounter: int
+    - bulletPower: int
+    ---
+    + AceEnemy(int, int, int, int, int)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
 }
-AbstractAircraft <|-- AceEnemy
 
-abstract class BaseBullet
-{
-    # power:int
-    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
-    + forward():void
-	+ getPower():int
+class BossEnemy {
+    - shootCycle: int
+    - shootCounter: int
+    ---
+    + BossEnemy(int, int, int, int, int)
+    + forward(): void
+    + shoot(): List<BaseBullet>
+    + dropProp(): List<baseprop>
+}
+
+abstract class BaseBullet {
+    # power: int
+    ---
+    + BaseBullet(int, int, int, int, int)
+    + forward(): void
+    + getPower(): int
 }
 
 class HeroBullet {
-    + HeroBullet(int locationX, int locationY,
-     int speedX, int speedY, int power)
+    + HeroBullet(int, int, int, int, int)
 }
 
 class EnemyBullet {
-    + EnemyBullet(int locationX, int locationY,
-     int speedX, int speedY, int power)
+    + EnemyBullet(int, int, int, int, int)
 }
 
-BaseBullet <|-- HeroBullet
-BaseBullet <|-- EnemyBullet
-
 abstract class baseprop {
-    + baseprop(int locationX, int locationY, int speedX, int speedY)
-    + forward():void
-    + {abstract} effect():void
+    + baseprop(int, int, int, int)
+    + forward(): void
+    + {abstract} effect(): void
 }
 
 class BloodProp {
-    - add:int
-    + BloodProp(int locationX, int locationY, int speedX, int speedY)
-    + effect():void
+    - add: int
+    ---
+    + BloodProp(int, int, int, int)
+    + effect(): void
 }
 
 class BombProp {
-    + BombProp(int locationX, int locationY, int speedX, int speedY)
-    + effect():void
+    + BombProp(int, int, int, int)
+    + effect(): void
 }
 
 class FireProp {
-  + FireProp(int locationX, int locationY, int speedX, int speedY)
-  + effect():void
+    + FireProp(int, int, int, int)
+    + effect(): void
 }
 
 class FireSuperProp {
-  + FireSuperProp(int locationX, int locationY, int speedX, int speedY)
-  + effect():void
+    + FireSuperProp(int, int, int, int)
+    + effect(): void
 }
 
 class FreezeProp {
-  + FreezeProp(int locationX, int locationY, int speedX, int speedY)
-  + effect():void
+    + FreezeProp(int, int, int, int)
+    + effect(): void
 }
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-- BaseBullet
+AbstractFlyingObject <|-- baseprop
+
+AbstractAircraft <|-- HeroAircraft
+AbstractAircraft <|-- MobEnemy
+AbstractAircraft <|-- EliteEnemy
+AbstractAircraft <|-- ElitePlusEnemy
+AbstractAircraft <|-- AceEnemy
+AbstractAircraft <|-- BossEnemy
+
+BaseBullet <|-- HeroBullet
+BaseBullet <|-- EnemyBullet
 
 baseprop <|-- BloodProp
 baseprop <|-- BombProp
@@ -154,72 +172,6 @@ baseprop <|-- FireProp
 baseprop <|-- FireSuperProp
 baseprop <|-- FreezeProp
 
-interface EnemyFactory {
-  + createEnemy(int locationX, int locationY):AbstractAircraft
-}
-
-class MobEnemyFactory {
-  + createEnemy(int locationX, int locationY):AbstractAircraft
-}
-
-class EliteEnemyFactory {
-  + createEnemy(int locationX, int locationY):AbstractAircraft
-}
-
-class ElitePlusEnemyFactory {
-  + createEnemy(int locationX, int locationY):AbstractAircraft
-}
-
-class AceEnemyFactory {
-  + createEnemy(int locationX, int locationY):AbstractAircraft
-}
-
-EnemyFactory <|.. MobEnemyFactory
-EnemyFactory <|.. EliteEnemyFactory
-EnemyFactory <|.. ElitePlusEnemyFactory
-EnemyFactory <|.. AceEnemyFactory
-
-class PropFactory {
-  + {static} createProp(int locationX, int locationY, int speedX, int speedY, String type):baseprop
-}
-
-PropFactory ..> baseprop : create
-Game ..> EnemyFactory : use
-
-AbstractFlyingObject <|-- AbstractAircraft
-AbstractFlyingObject <|-- BaseBullet
-AbstractFlyingObject <|-- baseprop
-
-note bottom of MobEnemy
-  普通敌机
-  不射击
-end note
-
-note bottom of EliteEnemy
-  精英敌机
-  直射单排子弹
-  周期: 20
-end note
-
-note bottom of ElitePlusEnemy
-  精锐敌机
-  直射双排子弹
-  周期: 20
-end note
-
-note bottom of AceEnemy
-  王牌敌机
-  扇形射击（3发）
-  周期: 25
-end note
-
-note right of HeroAircraft
-  单例模式
-  1) 私有构造方法
-  2) 静态唯一实例 instance
-  3) 静态访问点 getInstance(...)
-end note
-
-Game ..> HeroAircraft : getInstance()
+HeroAircraft --> HeroAircraft : 单例引用
 
 @enduml
