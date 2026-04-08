@@ -6,6 +6,7 @@ import edu.hitsz.aircraft.MobEnemy;
 import edu.hitsz.aircraft.AceEnemy;
 import edu.hitsz.aircraft.EliteEnemy;
 import edu.hitsz.aircraft.ElitePlusEnemy;
+import edu.hitsz.aircraft.BossEnemy;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.bullet.HeroBullet;
 
@@ -43,6 +44,7 @@ public class ImageManager {
     public static BufferedImage ELITE_ENEMY_IMAGE;
     public static BufferedImage ELITE_PLUS_ENEMY_IMAGE;
     public static BufferedImage ACE_ENEMY_IMAGE;
+    public static BufferedImage BOSS_ENEMY_IMAGE;
     public static BufferedImage PROP_BULLET_IMAGE;
     public static BufferedImage PROP_BULLET_PLUS_IMAGE;
     public static BufferedImage PROP_BOMB_IMAGE;
@@ -59,6 +61,7 @@ public class ImageManager {
             ELITE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elite.png"));
             ELITE_PLUS_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePlus.png"));
             ACE_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePro.png"));
+            BOSS_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/boss.png"));
             HERO_BULLET_IMAGE = ImageIO.read(new FileInputStream("src/images/bullet_hero.png"));
             ENEMY_BULLET_IMAGE = ImageIO.read(new FileInputStream("src/images/bullet_enemy.png"));
             PROP_BULLET_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bullet.png"));
@@ -72,6 +75,7 @@ public class ImageManager {
             CLASSNAME_IMAGE_MAP.put(EliteEnemy.class.getName(), ELITE_ENEMY_IMAGE);
             CLASSNAME_IMAGE_MAP.put(ElitePlusEnemy.class.getName(), ELITE_PLUS_ENEMY_IMAGE);
             CLASSNAME_IMAGE_MAP.put(AceEnemy.class.getName(), ACE_ENEMY_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(BossEnemy.class.getName(), BOSS_ENEMY_IMAGE);
             CLASSNAME_IMAGE_MAP.put(HeroBullet.class.getName(), HERO_BULLET_IMAGE);
             CLASSNAME_IMAGE_MAP.put(EnemyBullet.class.getName(), ENEMY_BULLET_IMAGE);
             CLASSNAME_IMAGE_MAP.put(FireProp.class.getName(), PROP_BULLET_IMAGE);

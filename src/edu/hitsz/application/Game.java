@@ -33,6 +33,7 @@ public class Game extends JPanel {
     private final List<BaseBullet> enemyBullets;
     private final List<baseprop> props;
     private final List<EnemyFactory> enemyFactories;
+    private final EnemyFactory bossFactory;
 
     //屏幕中出现的敌机最大数量
     private final int enemyMaxNumber = 5;
@@ -47,6 +48,10 @@ public class Game extends JPanel {
 
     //当前玩家分数
     private int score = 0;
+
+    // Boss触发阈值控制
+    private final int bossScoreThreshold = 100;
+    private int nextBossScore = bossScoreThreshold;
 
     //游戏结束标志
     private boolean gameOverFlag = false;
@@ -67,6 +72,7 @@ public class Game extends JPanel {
             new ElitePlusEnemyFactory(),
             new AceEnemyFactory()
         );
+        bossFactory = new BossEnemyFactory();
 
         //启动英雄机鼠标监听
         new HeroController(this, heroAircraft);
@@ -97,6 +103,8 @@ public class Game extends JPanel {
                         enemyAircrafts.add(enemyFactories.get(randomType).createEnemy(x, y));
                     }
                 }
+                // 分数到达阈值时触发Boss，且同屏仅存在1台Boss
+                spawnBossIfNeeded();
 
                 // 飞机发射子弹
                 shootAction();
@@ -231,6 +239,28 @@ public class Game extends JPanel {
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
         props.removeIf(AbstractFlyingObject::notValid);
+    }
+
+    private void spawnBossIfNeeded() {
+        if (score < nextBossScore) {
+            return;
+        }
+        nextBossScore += bossScoreThreshold;
+        if (hasBossAlive()) {
+            return;
+        }
+        int spawnX = Main.WINDOW_WIDTH / 2;
+        int spawnY = (int) (Main.WINDOW_HEIGHT * 0.08);
+        enemyAircrafts.add(bossFactory.createEnemy(spawnX, spawnY));
+    }
+
+    private boolean hasBossAlive() {
+        for (AbstractAircraft enemy : enemyAircrafts) {
+            if (enemy instanceof BossEnemy && !enemy.notValid()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
