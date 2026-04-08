@@ -126,15 +126,11 @@ public class Game extends JPanel {
     //***********************
 
     private void shootAction() {
-        shootCounter++;
-        if (shootCounter >= shootCycle) {
-            shootCounter = 0;
-            //英雄机射击
-            heroBullets.addAll(heroAircraft.shoot());
-            // 敌机射击
-            for (AbstractAircraft enemyAircraft : enemyAircrafts) {
-                enemyBullets.addAll(enemyAircraft.shoot());
-            }
+        //英雄机射击
+        heroBullets.addAll(heroAircraft.shoot());
+        // 敌机射击
+        for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+            enemyBullets.addAll(enemyAircraft.shoot());
         }
     }
 
