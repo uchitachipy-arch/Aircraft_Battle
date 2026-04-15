@@ -1,8 +1,66 @@
-@startuml FactoryMethod_Pattern
+@startuml Factory_Pattern
 
-title 工厂方法模式
+title 工厂模式：简单工厂 + 工厂方法
 
 !theme plain
+
+'==================== 简单工厂模式部分 ====================
+
+abstract class baseprop {
+    # locationX: int
+    # locationY: int
+    # speedX: int
+    # speedY: int
+    ---
+    + baseprop(int, int, int, int)
+    + forward(): void
+    + {abstract} effect(): void
+}
+
+class BloodProp {
+    + BloodProp(int, int, int, int)
+    + effect(): void
+}
+
+class FireProp {
+    + FireProp(int, int, int, int)
+    + effect(): void
+}
+
+class FireSuperProp {
+    + FireSuperProp(int, int, int, int)
+    + effect(): void
+}
+
+class BombProp {
+    + BombProp(int, int, int, int)
+    + effect(): void
+}
+
+class FreezeProp {
+    + FreezeProp(int, int, int, int)
+    + effect(): void
+}
+
+class PropFactory {
+    + {static} createProp(int, int, int, int, String): baseprop
+}
+
+baseprop <|-- BloodProp
+baseprop <|-- FireProp
+baseprop <|-- FireSuperProp
+baseprop <|-- BombProp
+baseprop <|-- FreezeProp
+
+PropFactory ..> baseprop : create
+PropFactory ..> BloodProp : instantiate
+PropFactory ..> FireProp : instantiate
+PropFactory ..> FireSuperProp : instantiate
+PropFactory ..> BombProp : instantiate
+PropFactory ..> FreezeProp : instantiate
+
+
+'==================== 工厂方法模式部分 ====================
 
 abstract class AbstractAircraft {
     # maxHp: int
@@ -74,5 +132,6 @@ EliteEnemyFactory ..> EliteEnemy : create
 ElitePlusEnemyFactory ..> ElitePlusEnemy : create
 AceEnemyFactory ..> AceEnemy : create
 BossEnemyFactory ..> BossEnemy : create
+
 
 @enduml
