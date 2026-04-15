@@ -5,6 +5,8 @@ import edu.hitsz.aircraft.factory.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.prop.baseprop;
+import edu.hitsz.application.scoreboard.SBDaoimple;
+import edu.hitsz.application.scoreboard.ScoreBoardDao;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +57,9 @@ public class Game extends JPanel {
 
     //游戏结束标志
     private boolean gameOverFlag = false;
+
+    private static final String DEFAULT_DIFFICULTY = "NORMAL";
+    private final ScoreBoardDao scoreBoardDao = new SBDaoimple();
 
     public Game() {
         heroAircraft = HeroAircraft.getInstance(
@@ -268,12 +273,17 @@ public class Game extends JPanel {
      */
     private void checkResultAction(){
         // 游戏结束检查英雄机是否存活
-        if (heroAircraft.getHp() <= 0) {
+        if (heroAircraft.getHp() <= 0 && !gameOverFlag) {
             timer.cancel(); // 取消定时器并终止所有调度任务
             gameOverFlag = true;
             System.out.println("Game Over!");
+            saveAndPrintRank();
         }
     };
+
+    private void saveAndPrintRank() {
+        scoreBoardDao.recordAndPrint(DEFAULT_DIFFICULTY, score);
+    }
 
     //***********************
     //      Paint 各部分
