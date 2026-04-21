@@ -5,6 +5,7 @@ import edu.hitsz.aircraft.factory.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.prop.baseprop;
+import edu.hitsz.prop.BombProp;
 import edu.hitsz.application.scoreboard.SBDaoimple;
 import edu.hitsz.application.scoreboard.ScoreBoardDao;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.*;
 
+import edu.hitsz.mythread.*;
 /**
  * 游戏主面板，游戏启动
  * @author uchpy
@@ -61,6 +63,16 @@ public class Game extends JPanel {
     private static final String DEFAULT_DIFFICULTY = "NORMAL";
     private final ScoreBoardDao scoreBoardDao = new SBDaoimple();
 
+
+    private MusicThread bgmThread;
+    private MusicThread bossThread;
+
+    private static final String BGM_FILE = "src/videos/bgm.wav";
+    private static final String BOSS_BGM_FILE = "src/videos/bgm_boss.wav";
+    private static final String BULLET_HIT_FILE = "src/videos/bullet_hit.wav";
+    private static final String BOMB_EXPLOSION_FILE = "src/videos/bomb_explosion.wav";
+    private static final String SUPPLY_FILE = "src/videos/get_supply.wav";
+    private static final String GAME_OVER_FILE = "src/videos/game_over.wav";
     public Game() {
         heroAircraft = HeroAircraft.getInstance(
                 Main.WINDOW_WIDTH / 2,
@@ -89,8 +101,12 @@ public class Game extends JPanel {
     /**
      * 游戏启动入口，执行游戏逻辑
      */
+    
     public void action() {
-
+        //设置背景音乐
+        bgmThread = new MusicThread(BGM_FILE);
+        bossThread = new MusicThread(BOSS_BGM_FILE);
+        bgmThread.start();
         // 定时任务：绘制、对象产生、碰撞判定、及结束判定
         TimerTask task = new TimerTask() {
             @Override
@@ -123,6 +139,8 @@ public class Game extends JPanel {
                 crashCheckAction();
                 // 后处理
                 postProcessAction();
+                // Boss音乐状态维护
+                
                 // 重绘界面
                 repaint();
                 // 游戏结束检查
@@ -205,7 +223,13 @@ public class Game extends JPanel {
                     // 敌机损失一定生命值
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
+                    playSfx(BULLET_HIT_FILE);
                     if (enemyAircraft.notValid()) {
+                        if(enemyAircraft instanceof BossEnemy){
+                            bossThread.stopMusic();
+                            bgmThread = new MusicThread(BGM_FILE);
+                            bgmThread.start();
+                        }
                         // 获得分数，产生道具补给
                         score += 10;
                         props.addAll(enemyAircraft.dropProp());
@@ -228,6 +252,10 @@ public class Game extends JPanel {
             if (heroAircraft.crash(prop) || prop.crash(heroAircraft)) {
                 // 触碰后触发道具效果（当前仅消失）
                 prop.effect();
+
+                if (prop instanceof BombProp) {
+                    playSfx(BOMB_EXPLOSION_FILE);
+                }else playSfx(SUPPLY_FILE);
                 prop.vanish();
             }
         }
@@ -254,6 +282,9 @@ public class Game extends JPanel {
         if (hasBossAlive()) {
             return;
         }
+        bgmThread.stopMusic();
+        bossThread = new MusicThread(BOSS_BGM_FILE);
+        bossThread.start();
         int spawnX = Main.WINDOW_WIDTH / 2;
         int spawnY = (int) (Main.WINDOW_HEIGHT * 0.08);
         enemyAircrafts.add(bossFactory.createEnemy(spawnX, spawnY));
@@ -276,10 +307,30 @@ public class Game extends JPanel {
         if (heroAircraft.getHp() <= 0 && !gameOverFlag) {
             timer.cancel(); // 取消定时器并终止所有调度任务
             gameOverFlag = true;
+            stopAllBgm();
+            playSfx(GAME_OVER_FILE);
             System.out.println("Game Over!");
             saveAndPrintRank();
         }
     };
+
+    
+
+    
+
+    private void stopAllBgm() {
+        if (bgmThread != null) {
+            bgmThread.stopMusic();
+        }
+        if (bossThread != null) {
+            bossThread.stopMusic();
+        }
+    }
+
+    private void playSfx(String fileName) {
+        onetimeMusic effectThread = new onetimeMusic(fileName);
+        effectThread.start();
+    }
 
     private void saveAndPrintRank() {
         scoreBoardDao.recordAndPrint(DEFAULT_DIFFICULTY, score);
