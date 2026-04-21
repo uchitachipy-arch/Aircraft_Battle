@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.concurrent.*;
 
 import edu.hitsz.mythread.*;
 /**

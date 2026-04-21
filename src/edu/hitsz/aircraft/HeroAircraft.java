@@ -1,11 +1,13 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.shootstrategy.*;
 import edu.hitsz.shootstrategy.onelinebullet_hero;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.hitsz.mythread.*;
 /**
  * 英雄飞机，游戏玩家操控
  * @author uchpy
@@ -13,7 +15,7 @@ import java.util.List;
 public class HeroAircraft extends AbstractAircraft {
 
     private static HeroAircraft instance;
-
+    private Thread waitThread = null ;
     private int Hpmax = 1000;
 
     private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
@@ -48,6 +50,18 @@ public class HeroAircraft extends AbstractAircraft {
     public List<edu.hitsz.prop.baseprop> dropProp() {
         // 英雄机不会掉落道具
         return new LinkedList<>();
+    }
+    @Override
+    public void setShootStrategy(Shootstrategy shootstrategy){
+        this.shootStrategy = shootstrategy;
+        if(waitThread != null){
+            waitThread.interrupt();
+        }
+        waitThread = new wait5sand();
+        waitThread.start();
+    }
+    public void normalshoot(){
+        super.setShootStrategy(new onelinebullet_hero());
     }
     public void addHp(int add){
         hp += add;
