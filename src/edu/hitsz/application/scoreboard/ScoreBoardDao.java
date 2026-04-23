@@ -7,5 +7,7 @@ public interface ScoreBoardDao {
 
     List<Score> getByDifficulty(String difficulty);
 
-    void recordAndPrint(String difficulty, int score);
+    void recordAndPrint(String difficulty, int score,String player);
+
+    void delete(Score score);
 }

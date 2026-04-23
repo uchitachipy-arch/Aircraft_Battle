@@ -18,7 +18,6 @@ import java.util.List;
 public class SBDaoimple implements ScoreBoardDao {
 
     private static final Path DATA_FILE = Paths.get("scoreboard", "scores.txt");
-    private static final String DEFAULT_PLAYER_NAME = "Guest";
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -32,6 +31,22 @@ public class SBDaoimple implements ScoreBoardDao {
         }
     }
 
+    public void delete(Score score){
+        if (score == null) {
+            return;
+        }
+        try {
+            ensureDataFile();
+            List<String> lines = Files.readAllLines(DATA_FILE, StandardCharsets.UTF_8);
+            String lineToRemove = score.toDataLine();
+            boolean isRemoved = lines.remove(lineToRemove);
+            if (isRemoved) {
+                Files.write(DATA_FILE, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("删除成绩失败", e);
+        }
+    }
     @Override
     public List<Score> getByDifficulty(String difficulty) {
         List<Score> result = new ArrayList<>();
@@ -56,10 +71,10 @@ public class SBDaoimple implements ScoreBoardDao {
     }
 
     @Override
-    public void recordAndPrint(String difficulty, int score) {
+    public void recordAndPrint(String difficulty, int score ,String player) {
         String currentDifficulty = normalizeDifficulty(difficulty);
         String now = LocalDateTime.now().format(TIME_FORMATTER);
-        Score currentScore = new Score(currentDifficulty, DEFAULT_PLAYER_NAME, score, now);
+        Score currentScore = new Score(currentDifficulty, player, score, now);
         add(currentScore);
 
         List<Score> ranking = getByDifficulty(currentDifficulty);
@@ -89,4 +104,5 @@ public class SBDaoimple implements ScoreBoardDao {
         }
         return difficulty.trim().toUpperCase();
     }
+
 }

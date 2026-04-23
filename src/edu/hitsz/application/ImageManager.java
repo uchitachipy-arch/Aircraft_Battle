@@ -101,4 +101,20 @@ public class ImageManager {
         return get(obj.getClass().getName());
     }
 
+    public static void changeBackground(String difficulty) {
+        try {
+            if ("EASY".equals(difficulty)) {
+                // 假设你有一张名为 bg_easy.jpg 的简单难度背景
+                BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            } else if ("NORMAL".equals(difficulty)) {
+                BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg2.jpg"));
+            } else if ("HARD".equals(difficulty)) {
+                // 假设你有一张名为 bg_hard.jpg 的困难难度背景
+                BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg3.jpg"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("背景图片加载失败，请检查文件路径！");
+        }
+    }
 }

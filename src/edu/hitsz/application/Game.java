@@ -59,7 +59,7 @@ public class Game extends JPanel {
     //游戏结束标志
     private boolean gameOverFlag = false;
 
-    private static final String DEFAULT_DIFFICULTY = "NORMAL";
+    private String DIFFICULTY = "NORMAL";
     private final ScoreBoardDao scoreBoardDao = new SBDaoimple();
 
 
@@ -72,7 +72,8 @@ public class Game extends JPanel {
     private static final String BOMB_EXPLOSION_FILE = "src/videos/bomb_explosion.wav";
     private static final String SUPPLY_FILE = "src/videos/get_supply.wav";
     private static final String GAME_OVER_FILE = "src/videos/game_over.wav";
-    public Game() {
+    public Game(String Difficulty) {
+        DIFFICULTY=Difficulty;
         heroAircraft = HeroAircraft.getInstance(
                 Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
@@ -309,9 +310,11 @@ public class Game extends JPanel {
             stopAllBgm();
             playSfx(GAME_OVER_FILE);
             System.out.println("Game Over!");
-            saveAndPrintRank();
+            ScoretableUI scoreUI = new ScoretableUI(this.DIFFICULTY,score);
+            Main.cardPanel.add(scoreUI.getScoretableUI(), "SCORE");
+            Main.cardLayout.show(Main.cardPanel, "SCORE");
         }
-    };
+    }
 
     
 
@@ -331,9 +334,6 @@ public class Game extends JPanel {
         effectThread.start();
     }
 
-    private void saveAndPrintRank() {
-        scoreBoardDao.recordAndPrint(DEFAULT_DIFFICULTY, score);
-    }
 
     //***********************
     //      Paint 各部分

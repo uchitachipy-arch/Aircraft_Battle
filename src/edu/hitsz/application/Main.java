@@ -11,7 +11,8 @@ public class Main {
 
     public static final int WINDOW_WIDTH = 512;
     public static final int WINDOW_HEIGHT = 768;
-
+    static final CardLayout cardLayout = new CardLayout(0,0);
+    static final JPanel cardPanel = new JPanel(cardLayout);
     public static void main(String[] args) {
 
         System.out.println("Hello Aircraft War");
@@ -25,10 +26,10 @@ public class Main {
         frame.setBounds(((int) screenSize.getWidth() - WINDOW_WIDTH) / 2, 0,
                 WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        Game game = new Game();
-        frame.add(game);
+        frame.add(cardPanel);
+        DiffMenu diffMenu = new DiffMenu();
+        // 将菜单界面添加到 cardPanel，并给这张卡片命名为 "MENU"
+        cardPanel.add(diffMenu.getDiffMenu(), "MENU");
         frame.setVisible(true);
-        game.action();
     }
 }
